@@ -2,6 +2,7 @@ from django import forms
 from .models import MediaFile
 
 
+# Media Form For Handling Form Data
 class MediaFileForm(forms.ModelForm):
     class Meta:
         model = MediaFile
@@ -16,7 +17,7 @@ class MediaFileForm(forms.ModelForm):
             if file.size > 10 * 1024 * 1024:  # 10MB
                 raise forms.ValidationError("File size must not exceed 10MB")
 
-            # Get file extension
+            # Get file extension and check
             extension = file.name.split(".")[-1].lower()
             if extension not in ["mp3", "mp4", "jpeg", "jpg", "png", "gif"]:
                 raise forms.ValidationError("Invalid file type")
