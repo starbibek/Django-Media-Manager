@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Media Manager</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+      .modal-image {
+        max-width: 100%;
+        max-height: 80vh;
+      }
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1050;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">Media Manager</a>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- Toast Container -->
+      <div class="toast-container"></div>
+
+      <!-- File List -->
+      <div class="card">
+        <div
+          class="card-header d-flex justify-content-between align-items-center"
+        >
+          <h5 class="card-title">File List</h5>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#uploadModal"
+          >
+            Upload Files
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Filename</th>
+                  <th>Category</th>
+                  <th>Size</th>
+                  <th>Uploaded</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for file in files %}
+                <tr>
+                  <td>{{ file.filename }}</td>
+                  <td>{{ file.category }}</td>
+                  <td>{{ file.size|filesizeformat }}</td>
+                  <td>{{ file.uploaded_at }}</td>
+                  <td>
+                    <button
+                      onclick="viewFile('{{ file.file.url }}', '{{ file.category }}')"
+                      class="btn btn-sm btn-info"
+                    >
+                      View
+                    </button>
+                    <a
+                      href="{% url 'download_file' file.pk %}"
+                      class="btn btn-sm btn-success"
+                      >Download</a
+                    >
+                    <button
+                      onclick="deleteFile({{ file.pk }})"
+                      class="btn btn-sm btn-danger"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="5" class="text-center">No files uploaded yet</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Upload Files</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="uploadForm" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="file" class="form-label">Select Files</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="file"
+                  name="file"
+                  multiple
+                  accept=".mp3,.mp4,.jpeg,.jpg,.png,.gif"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View Modal -->
+    <div class="modal fade" id="viewModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">View File</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body text-center" id="viewModalContent"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/media-manager.js' %}"></script>
+  </body>
+</html>
