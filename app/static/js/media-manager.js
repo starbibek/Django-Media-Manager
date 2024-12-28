@@ -31,7 +31,7 @@ function updateFileList(files) {
             <td>${formatFileSize(file.size)}</td>
             <td>${new Date(file.uploaded_at).toLocaleString()}</td>
             <td>
-                <button onclick="viewFile('${file.file}', '${file.category}')" 
+                <button onclick="viewFile('uploads/${file.file}', '${file.category}')" 
                         class="btn btn-sm btn-info">View</button>
                 <a href="/download/${file.id}/" 
                    class="btn btn-sm btn-success">Download</a>
