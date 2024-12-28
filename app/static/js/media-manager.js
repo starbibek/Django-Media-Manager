@@ -131,4 +131,31 @@ document.addEventListener('DOMContentLoaded', function() {
             showToast('An error occurred while uploading', 'danger');
         }
     });
-}); 
+});
+
+// autoPlay Setup for Video/Audio on Modal open/close
+document.getElementById("viewModal").addEventListener('shown.bs.modal', ()=>{
+    const vidEl = document.querySelectorAll("video");
+    const audEl = document.querySelectorAll("audio");
+
+    [...vidEl, ...audEl].forEach(element => {
+        if (element) {
+            element.play().catch(error => { 
+                showToast("Cannot auto-play video/audio");
+            });
+        }
+    });
+
+});
+
+document.getElementById("viewModal").addEventListener('hidden.bs.modal', ()=>{
+    const vidEl = document.querySelectorAll("video");
+    const audEl = document.querySelectorAll("audio");
+
+    [...vidEl, ...audEl].forEach(element => {
+        if (element) {
+            element.pause();
+        }
+    });
+
+});
