@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, FileResponse
 from django.contrib import messages
+from django.core.paginator import Paginator
 from .models import MediaFile
 from .forms import MediaFileForm
 
 
 def index(request):
-    files = MediaFile.objects.all().order_by("-uploaded_at")
+    file_list = MediaFile.objects.all().order_by("-uploaded_at")
+    items_per_page = 10
+    paginator = Paginator(file_list, items_per_page)
+    page = request.GET.get("page", 1)
+    files = paginator.get_page(page)
     return render(request, "media_manager/index.html", {"files": files})
 
 

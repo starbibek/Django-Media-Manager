@@ -37,6 +37,7 @@
             Upload Files
           </button>
         </div>
+
         <div class="card-body">
           <div class="table-responsive">
             <table class="table">
@@ -84,6 +85,57 @@
                 {% endfor %}
               </tbody>
             </table>
+
+            <!-- Styled pagination -->
+            <nav aria-label="Page navigation" class="mt-4">
+              <ul class="pagination justify-content-center">
+                <!-- Previous button -->
+                {% if files.has_previous %}
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="?page={{ files.previous_page_number }}"
+                    aria-label="Previous"
+                  >
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+
+                <!-- Page numbers -->
+                {% for page in files.paginator.page_range %}
+                {%if page == files.number %}
+                <li class="page-item active">
+                  <span class="page-link">{{ page }}</span>
+                </li>
+                {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                </li>
+                {% endif %} {% endfor %}
+
+                <!-- Next button -->
+                {% if files.has_next %}
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="?page={{ files.next_page_number }}"
+                    aria-label="Next"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <span class="page-link">&raquo;</span>
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
           </div>
         </div>
       </div>

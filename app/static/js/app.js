@@ -105,7 +105,11 @@ async function deleteFile(pk) {
                 }
                 // Update file list regardless of success/failure
                 if (data.files) {
-                    updateFileList(data.files);
+                    // updateFileList(data.files);
+                    //setting timeout to update the file list after 1 second
+                    setTimeout(() => {
+                        window.location.replace('/');
+                    }, 1000);
                 }
             } else {
                 Swal.fire('Error!', data.message, 'error');
@@ -155,7 +159,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
             if (result.success) {
                 showToast(result.message);
-                updateFileList(result.files);
+                // updateFileList(result.files);
+                window.location.replace('/');
                 bootstrap.Modal.getInstance(document.getElementById('uploadModal')).hide();
                 e.target.reset();
             } else {
