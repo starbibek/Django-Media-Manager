@@ -141,7 +141,7 @@ document.getElementById("viewModal").addEventListener('shown.bs.modal', ()=>{
     [...vidEl, ...audEl].forEach(element => {
         if (element) {
             element.play().catch(error => { 
-                showToast("Cannot auto-play video/audio");
+                showToast("Cannot auto-play video/audio","error");
             });
         }
     });
