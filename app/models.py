@@ -15,7 +15,7 @@ class MediaFile(models.Model):
     ]
 
     file = models.FileField(
-        upload_to="uploads/",
+        upload_to="files/",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=["mp3", "mp4", "jpeg", "png", "gif"]
